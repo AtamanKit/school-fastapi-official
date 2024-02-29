@@ -1,0 +1,131 @@
+api  | /usr/local/lib/python3.12/site-packages/pydantic/_internal/_config.py:322: UserWarning: Valid config keys have changed in V2:
+api  | * 'orm_mode' has been renamed to 'from_attributes'
+api  |   warnings.warn(message, UserWarning)
+api  | INFO:     Started server process [1]
+api  | INFO:     Waiting for application startup.
+api  | INFO:     Application startup complete.
+api  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+api  | INFO:     172.19.0.1:49942 - "GET /items/?skip=0&limit=100 HTTP/1.1" 200 OK
+api  | INFO:     172.19.0.1:49956 - "POST /users/ HTTP/1.1" 500 Internal Server Error
+api  | ERROR:    Exception in ASGI application
+api  | Traceback (most recent call last):
+api  |   File "/usr/local/lib/python3.12/site-packages/uvicorn/protocols/http/httptools_impl.py", line 419, in run_asgi
+api  |     result = await app(  # type: ignore[func-returns-value]
+api  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+api  |     return await self.app(scope, receive, send)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/fastapi/applications.py", line 1054, in __call__
+api  |     await super().__call__(scope, receive, send)
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/applications.py", line 123, in __call__
+api  |     await self.middleware_stack(scope, receive, send)
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/middleware/errors.py", line 186, in __call__
+api  |     raise exc
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/middleware/errors.py", line 164, in __call__
+api  |     await self.app(scope, receive, _send)
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+api  |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+api  |     raise exc
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+api  |     await app(scope, receive, sender)
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/routing.py", line 758, in __call__
+api  |     await self.middleware_stack(scope, receive, send)
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/routing.py", line 778, in app
+api  |     await route.handle(scope, receive, send)
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/routing.py", line 299, in handle
+api  |     await self.app(scope, receive, send)
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/routing.py", line 79, in app
+api  |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+api  |     raise exc
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+api  |     await app(scope, receive, sender)
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/routing.py", line 74, in app
+api  |     response = await func(request)
+api  |                ^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/fastapi/routing.py", line 299, in app
+api  |     raise e
+api  |   File "/usr/local/lib/python3.12/site-packages/fastapi/routing.py", line 294, in app
+api  |     raw_response = await run_endpoint_function(
+api  |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/fastapi/routing.py", line 193, in run_endpoint_function
+api  |     return await run_in_threadpool(dependant.call, **values)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/starlette/concurrency.py", line 42, in run_in_threadpool
+api  |     return await anyio.to_thread.run_sync(func, *args)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/anyio/to_thread.py", line 56, in run_sync
+api  |     return await get_async_backend().run_sync_in_worker_thread(
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 2134, in run_sync_in_worker_thread
+api  |     return await future
+api  |            ^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/anyio/_backends/_asyncio.py", line 851, in run
+api  |     result = context.run(func, *args)
+api  |              ^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/backend/app/routers/users.py", line 20, in create_user
+api  |     return create_user(db=db, user=user)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/backend/app/routers/users.py", line 20, in create_user
+api  |     return create_user(db=db, user=user)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/backend/app/routers/users.py", line 20, in create_user
+api  |     return create_user(db=db, user=user)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   [Previous line repeated 976 more times]
+api  |   File "/backend/app/routers/users.py", line 17, in create_user
+api  |     db_user = get_user_by_email(db, email=user.email)
+api  |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/backend/app/crud/users.py", line 13, in get_user_by_email
+api  |     return db.query(User).filter(User.email == email).first()
+api  |                                  ^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/operators.py", line 582, in __eq__
+api  |     return self.operate(eq, other)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/attributes.py", line 453, in operate
+api  |     return op(self.comparator, *other, **kwargs)  # type: ignore[no-any-return]  # noqa: E501
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/operators.py", line 582, in __eq__
+api  |     return self.operate(eq, other)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/properties.py", line 478, in operate
+api  |     return op(self.__clause_element__(), *other, **kwargs)  # type: ignore[no-any-return]  # noqa: E501
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/annotation.py", line 371, in __eq__
+api  |     return self.__element.__class__.__eq__(self, other)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/operators.py", line 582, in __eq__
+api  |     return self.operate(eq, other)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 1510, in operate
+api  |     return op(self.comparator, *other, **kwargs)  # type: ignore[no-any-return]  # noqa: E501
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/operators.py", line 582, in __eq__
+api  |     return self.operate(eq, other)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/type_api.py", line 194, in operate
+api  |     return op_fn(self.expr, op, *other, **addtl_kw)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/default_comparator.py", line 121, in _boolean_compare
+api  |     obj = coercions.expect(
+api  |           ^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/coercions.py", line 396, in expect
+api  |     resolved = impl._literal_coercion(
+api  |                ^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/coercions.py", line 794, in _literal_coercion
+api  |     return expr._bind_param(operator, element, type_=bindparam_type)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 4472, in _bind_param
+api  |     return BindParameter(
+api  |            ^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 1972, in __init__
+api  |     self.key = _anonymous_label.safe_construct(
+api  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/elements.py", line 5308, in safe_construct
+api  |     body = re.sub(r"[%\(\) \$]+", "_", body)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+api  |   File "/usr/local/lib/python3.12/re/__init__.py", line 186, in sub
+api  |     return _compile(pattern, flags).sub(repl, string, count)
+api  |            ^^^^^^^^^^^^^^^^^^^^^^^^
+api  | RecursionError: maximum recursion depth exceeded
