@@ -19,7 +19,6 @@ async def get_user_by_email(db: AsyncSession, email: str):
 async def get_users(db: AsyncSession, skip: int = 0, limit: int = 100) -> list[schemas.User]:
     result = await db.execute(select(models.User).offset(skip).limit(limit))
     users = result.scalars().all()
-    [print("sssssssssssss", user) for user in users]
     return users
 
 
@@ -27,12 +26,13 @@ async def create_user(db: AsyncSession, user: schemas.UserCreate) -> schemas.Use
     fake_hashed_password = user.password + "notreallyhashed"
     # Prepare user to be inserted with SQLAlchemy
     db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+    print("dddddddddddd", db_user)
     db.add(db_user)
     await db.commit()
     await db.refresh(db_user)
     # Created user is returned as a Pydantic model
-    new_user = schemas.User(id=db_user.id, email=db_user.email, is_active=db_user.is_active)
-    return new_user
+    # new_user = schemas.User(id=db_user.id, email=db_user.email, is_active=db_user.is_active)
+    return db_user
 
 
 async def delete_user(db: AsyncSession, user_id: int = None):

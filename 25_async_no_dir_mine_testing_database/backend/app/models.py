@@ -46,16 +46,24 @@ class User(Base):
         return users
 
 
+    # @classmethod
+    # async def create_user(cls, db: AsyncSession, **kwargs):
+    #     user_email = kwargs.get("email")
+    #     user_password = str(kwargs.get("password"))
+    #     fake_hashed_password = user_password + "notreallyhashed"
+    #     db_user = cls(email=str(user_email), hashed_password=fake_hashed_password)
+    #     db.add(db_user)
+    #     await db.commit()
+    #     await db.refresh(db_user)
+    #     return db_user
     @classmethod
     async def create_user(cls, db: AsyncSession, **kwargs):
-        user_email = kwargs.get("email")
-        user_password = str(kwargs.get("password"))
-        fake_hashed_password = user_password + "notreallyhashed"
-        db_user = cls(email=str(user_email), hashed_password=fake_hashed_password)
-        db.add(db_user)
+        print("kkkkkkkkkkkkkkkkwargs: ", kwargs)
+        transaction = cls(**kwargs)
+        db.add(transaction)
         await db.commit()
-        await db.refresh(db_user)
-        return db_user
+        await db.refresh(transaction)
+        return transaction
 
 
 class Item(Base):
