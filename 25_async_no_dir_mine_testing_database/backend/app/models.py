@@ -57,9 +57,13 @@ class User(Base):
     #     await db.refresh(db_user)
     #     return db_user
     @classmethod
-    async def create_user(cls, db: AsyncSession, **kwargs):
-        print("kkkkkkkkkkkkkkkkwargs: ", kwargs)
-        transaction = cls(**kwargs)
+    async def create_user(cls, db: AsyncSession, user):
+        print("kkkkkkkkkkkkkkkkwargs: ", user.dict())
+        user_data = user.dict()
+        fake_hashed_password = user.password + "notreallyhashed"
+        user_data["hashed_password"] = fake_hashed_password
+        print("kkkkkkkkkkkkkkkkwargs: ", user_data)
+        transaction = cls(**user_data)
         db.add(transaction)
         await db.commit()
         await db.refresh(transaction)
