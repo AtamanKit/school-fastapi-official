@@ -33,5 +33,3 @@ def test_create_item_user(client):
     assert data["description"] == "A song by Alla Pugachiova"
     assert data["owner_id"] == user_id
     assert "id" in data
-    
-    

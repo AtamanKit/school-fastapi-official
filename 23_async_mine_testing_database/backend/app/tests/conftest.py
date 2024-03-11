@@ -21,7 +21,7 @@ def client(test_app):
 
 
 @pytest.fixture(autouse=True, scope="session")
-def setup_database():
-    with sessionmanager.connect() as connection:
-        sessionmanager.drop_all(connection)
-        sessionmanager.create_all(connection)
+async def setup_database():
+    async with sessionmanager.connect() as connection:
+        await sessionmanager.drop_all(connection)
+        await sessionmanager.create_all(connection)
