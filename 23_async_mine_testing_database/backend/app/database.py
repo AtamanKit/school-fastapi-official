@@ -5,6 +5,10 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from app.config import settings
 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 Base = declarative_base()
 
@@ -64,10 +68,18 @@ class DatabaseSessionManager:
             await session.close()
 
     async def create_all(self, connection: AsyncConnection):
-        await connection.run_sync(Base.metadata.create_all)
+        try:
+            await connection.run_sync(Base.metadata.create_all)
+        except Exception as e:
+            logger.error(f"Error creating tables: {e}")
+            raise
 
     async def drop_all(self, connection: AsyncConnection):
-        await connection.run_sync(Base.metadata.drop_all)
+        try:
+            await connection.run_sync(Base.metadata.drop_all)
+        except Exception as e:
+            logger.info(f"Error dropping tables: {e}")
+            raise
 
 
 DATABASE_URL = settings.db_url if not settings.testing else settings.db_url_test

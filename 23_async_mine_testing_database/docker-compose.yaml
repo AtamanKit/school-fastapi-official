@@ -12,7 +12,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      TESTING: 0
+      TESTING: 1
     env_file:
       - ./backend/.env.api
     depends_on:

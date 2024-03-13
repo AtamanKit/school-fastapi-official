@@ -2,8 +2,9 @@
 This module contains fixtures and setup functions for testing the FastAPI application.
 """
 
-from app.database import sessionmanager
+from app.database import sessionmanager, get_db
 from app.main import app
+from app.models import User, Item
 
 import pytest
 from fastapi.testclient import TestClient
@@ -20,6 +21,7 @@ def client(test_app):
         yield client
 
 
+# For this to work we need to modify `root/pytest.ini`
 @pytest.fixture(autouse=True, scope="session")
 async def setup_database():
     async with sessionmanager.connect() as connection:
