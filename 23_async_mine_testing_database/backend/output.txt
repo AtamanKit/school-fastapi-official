@@ -2,132 +2,46 @@
 platform linux -- Python 3.12.2, pytest-8.0.1, pluggy-1.4.0
 rootdir: /backend
 configfile: pytest.ini
-plugins: asyncio-0.23.5.post1, anyio-4.2.0, postgresql-5.1.0
+plugins: asyncio-0.23.5.post1, postgresql-5.1.0, anyio-4.2.0
 asyncio: mode=Mode.AUTO
-collected 1 item
+collected 2 items
 
-app/tests/test_sql_app.py F                                              [100%]
+app/tests/test_sql_app.py::test_create_user 
+-------------------------------- live log setup --------------------------------
+DEBUG    asyncio:selector_events.py:64 Using selector: EpollSelector
+DEBUG    asyncio:selector_events.py:64 Using selector: EpollSelector
+DEBUG    app.tests.conftest:conftest.py:43 Check the database engine: <sqlalchemy.ext.asyncio.engine.AsyncEngine object at 0x79bf86757910>
+DEBUG    app.tests.conftest:conftest.py:44 Current event loop in setup_database: 133863490000736
+DEBUG    app.database:database.py:69 Current event loop in drop_all: 133863490000736
+-------------------------------- live log call ---------------------------------
+DEBUG    app.tests.test_sql_app:test_sql_app.py:15 Current event loop (user) before request: 133863490000736
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/users/ "HTTP/1.1 200 OK"
+DEBUG    app.tests.test_sql_app:test_sql_app.py:20 Current event loop (user) after request: 133863490000736
+PASSED                                                                   [ 50%]
+------------------------------ live log teardown -------------------------------
+DEBUG    app.tests.conftest:conftest.py:52 Current event loop in teardown_databsase: 133863490000736
+DEBUG    asyncio:selector_events.py:64 Using selector: EpollSelector
 
-=================================== FAILURES ===================================
-_______________________________ test_create_user _______________________________
+app/tests/test_sql_app.py::test_create_item_user 
+-------------------------------- live log setup --------------------------------
+DEBUG    asyncio:selector_events.py:64 Using selector: EpollSelector
+DEBUG    app.tests.conftest:conftest.py:43 Check the database engine: None
+DEBUG    app.tests.conftest:conftest.py:44 Current event loop in setup_database: 133863490001264
+DEBUG    app.database:database.py:69 Current event loop in drop_all: 133863490001264
+-------------------------------- live log call ---------------------------------
+DEBUG    app.tests.test_sql_app:test_sql_app.py:40 Current event loop (item) before request: 133863490001264
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/users/ "HTTP/1.1 200 OK"
+DEBUG    app.tests.test_sql_app:test_sql_app.py:44 Current event loop (item) after request: 133863490001264
+INFO     httpx:_client.py:1758 HTTP Request: POST http://test/users/1/items/ "HTTP/1.1 200 OK"
+PASSED                                                                   [100%]
+------------------------------ live log teardown -------------------------------
+DEBUG    app.tests.conftest:conftest.py:52 Current event loop in teardown_databsase: 133863490001264
+DEBUG    asyncio:selector_events.py:64 Using selector: EpollSelector
 
-client = <httpx.AsyncClient object at 0x7f8e9d8b8d10>
 
-    @pytest.mark.asyncio
-    async def test_create_user(client):
-        logger.debug(f"Current event loop in test_create_user: {id(asyncio.get_running_loop())}")
->       response = await client.post(
-            "/users/",
-            json={"email": "bogdantitamir@example.com", "password": "chimichangas4life"},
-        )
-
-app/tests/test_sql_app.py:13: 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-/usr/local/lib/python3.12/site-packages/httpx/_client.py:1877: in post
-    return await self.request(
-/usr/local/lib/python3.12/site-packages/httpx/_client.py:1559: in request
-    return await self.send(request, auth=auth, follow_redirects=follow_redirects)
-/usr/local/lib/python3.12/site-packages/httpx/_client.py:1646: in send
-    response = await self._send_handling_auth(
-/usr/local/lib/python3.12/site-packages/httpx/_client.py:1674: in _send_handling_auth
-    response = await self._send_handling_redirects(
-/usr/local/lib/python3.12/site-packages/httpx/_client.py:1711: in _send_handling_redirects
-    response = await self._send_single_request(request)
-/usr/local/lib/python3.12/site-packages/httpx/_client.py:1748: in _send_single_request
-    response = await transport.handle_async_request(request)
-/usr/local/lib/python3.12/site-packages/httpx/_transports/asgi.py:162: in handle_async_request
-    await self.app(scope, receive, send)
-/usr/local/lib/python3.12/site-packages/fastapi/applications.py:1054: in __call__
-    await super().__call__(scope, receive, send)
-/usr/local/lib/python3.12/site-packages/starlette/applications.py:123: in __call__
-    await self.middleware_stack(scope, receive, send)
-/usr/local/lib/python3.12/site-packages/starlette/middleware/errors.py:186: in __call__
-    raise exc
-/usr/local/lib/python3.12/site-packages/starlette/middleware/errors.py:164: in __call__
-    await self.app(scope, receive, _send)
-/usr/local/lib/python3.12/site-packages/starlette/middleware/exceptions.py:62: in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-/usr/local/lib/python3.12/site-packages/starlette/_exception_handler.py:64: in wrapped_app
-    raise exc
-/usr/local/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
-    await app(scope, receive, sender)
-/usr/local/lib/python3.12/site-packages/starlette/routing.py:758: in __call__
-    await self.middleware_stack(scope, receive, send)
-/usr/local/lib/python3.12/site-packages/starlette/routing.py:778: in app
-    await route.handle(scope, receive, send)
-/usr/local/lib/python3.12/site-packages/starlette/routing.py:299: in handle
-    await self.app(scope, receive, send)
-/usr/local/lib/python3.12/site-packages/starlette/routing.py:79: in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-/usr/local/lib/python3.12/site-packages/starlette/_exception_handler.py:64: in wrapped_app
-    raise exc
-/usr/local/lib/python3.12/site-packages/starlette/_exception_handler.py:53: in wrapped_app
-    await app(scope, receive, sender)
-/usr/local/lib/python3.12/site-packages/starlette/routing.py:74: in app
-    response = await func(request)
-/usr/local/lib/python3.12/site-packages/fastapi/routing.py:299: in app
-    raise e
-/usr/local/lib/python3.12/site-packages/fastapi/routing.py:294: in app
-    raw_response = await run_endpoint_function(
-/usr/local/lib/python3.12/site-packages/fastapi/routing.py:191: in run_endpoint_function
-    return await dependant.call(**values)
-app/routers/users.py:15: in create_user_endpoint
-    db_user = await get_user_by_email(db, email=user.email)
-app/crud/users.py:16: in get_user_by_email
-    result = await db.execute(select(models.User).filter(models.User.email == email))
-/usr/local/lib/python3.12/site-packages/sqlalchemy/ext/asyncio/session.py:452: in execute
-    result = await greenlet_spawn(
-/usr/local/lib/python3.12/site-packages/sqlalchemy/util/_concurrency_py3k.py:197: in greenlet_spawn
-    result = context.throw(*sys.exc_info())
-/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/session.py:2306: in execute
-    return self._execute_internal(
-/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/session.py:2191: in _execute_internal
-    result: Result[Any] = compile_state_cls.orm_execute_statement(
-/usr/local/lib/python3.12/site-packages/sqlalchemy/orm/context.py:293: in orm_execute_statement
-    result = conn.execute(
-/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1408: in execute
-    return meth(
-/usr/local/lib/python3.12/site-packages/sqlalchemy/sql/elements.py:513: in _execute_on_connection
-    return connection._execute_clauseelement(
-/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1630: in _execute_clauseelement
-    ret = self._execute_context(
-/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1839: in _execute_context
-    return self._exec_single_context(
-/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1979: in _exec_single_context
-    self._handle_dbapi_exception(
-/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:2338: in _handle_dbapi_exception
-    raise exc_info[1].with_traceback(exc_info[2])
-/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/base.py:1960: in _exec_single_context
-    self.dialect.do_execute(
-/usr/local/lib/python3.12/site-packages/sqlalchemy/engine/default.py:924: in do_execute
-    cursor.execute(statement, parameters)
-/usr/local/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:572: in execute
-    self._adapt_connection.await_(
-/usr/local/lib/python3.12/site-packages/sqlalchemy/util/_concurrency_py3k.py:127: in await_only
-    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
-/usr/local/lib/python3.12/site-packages/sqlalchemy/util/_concurrency_py3k.py:192: in greenlet_spawn
-    value = await result
-/usr/local/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:508: in _prepare_and_execute
-    await adapt_connection._start_transaction()
-/usr/local/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:842: in _start_transaction
-    self._handle_exception(error)
-/usr/local/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:791: in _handle_exception
-    raise error
-/usr/local/lib/python3.12/site-packages/sqlalchemy/dialects/postgresql/asyncpg.py:840: in _start_transaction
-    await self._transaction.start()
-/usr/local/lib/python3.12/site-packages/asyncpg/transaction.py:146: in start
-    await self._connection.execute(query)
-/usr/local/lib/python3.12/site-packages/asyncpg/connection.py:350: in execute
-    result = await self._protocol.query(query, timeout)
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-
->   ???
-E   RuntimeError: Task <Task pending name='Task-5' coro=<test_create_user() running at /backend/app/tests/test_sql_app.py:13> cb=[_run_until_complete_cb() at /usr/local/lib/python3.12/asyncio/base_events.py:181]> got Future <Future pending cb=[Protocol._on_waiter_completed()]> attached to a different loop
-
-asyncpg/protocol/protocol.pyx:374: RuntimeError
 =============================== warnings summary ===============================
-app/database.py:13
-  /backend/app/database.py:13: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+app/database.py:14
+  /backend/app/database.py:14: MovedIn20Warning: The ``declarative_base()`` function is now available as sqlalchemy.orm.declarative_base(). (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
     Base = declarative_base()
 
 ../usr/local/lib/python3.12/site-packages/pydantic/_internal/_config.py:272
@@ -140,7 +54,9 @@ app/database.py:13
   * 'orm_mode' has been renamed to 'from_attributes'
     warnings.warn(message, UserWarning)
 
+app/tests/test_sql_app.py::test_create_item_user
+  /usr/local/lib/python3.12/site-packages/pydantic/main.py:1024: PydanticDeprecatedSince20: The `dict` method is deprecated; use `model_dump` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.6/migration/
+    warnings.warn('The `dict` method is deprecated; use `model_dump` instead.', category=PydanticDeprecatedSince20)
+
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-=========================== short test summary info ============================
-FAILED app/tests/test_sql_app.py::test_create_user - RuntimeError: Task <Task...
-======================== 1 failed, 4 warnings in 0.74s =========================
+======================== 2 passed, 5 warnings in 0.20s =========================

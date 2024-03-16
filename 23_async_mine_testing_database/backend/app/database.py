@@ -1,34 +1,25 @@
 import contextlib
 
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncConnection
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncConnection, AsyncEngine
 from sqlalchemy.ext.declarative import declarative_base
 
-from app.config import settings
+# from app.config import settings
 
+import asyncio
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 Base = declarative_base()
 
 
 class DatabaseSessionManager:
-    """
-    A class that manages the database session and connection.
+    def __init__(self):
+        self._engine: AsyncEngine | None = None
+        self._sessionmaker: async_sessionmaker | None = None
 
-    Attributes:
-        _engine (Engine): The SQLAlchemy engine object.
-        _sessionmaker (Session): The SQLAlchemy sessionmaker object.
-
-    Methods:
-        close(): Closes the database session and disposes the engine.
-        connect(): Context manager for establishing a database connection.
-        session(): Context manager for creating a database session.
-        create_all(connection: Connection): Creates all tables in the database.
-        drop_all(connection: Connection): Drops all tables in the database.
-    """
-    def __init__(self, host: str):
+    def init(self, host: str):
         self._engine = create_async_engine(host)
         self._sessionmaker = async_sessionmaker(autocommit=False, bind=self._engine)
 
@@ -71,19 +62,20 @@ class DatabaseSessionManager:
         try:
             await connection.run_sync(Base.metadata.create_all)
         except Exception as e:
-            logger.error(f"Error creating tables: {e}")
+            # logger.error(f"Error creating tables: {e}")
             raise
 
     async def drop_all(self, connection: AsyncConnection):
+        # logger.debug(f"Current event loop in drop_all: {id(asyncio.get_event_loop())}")
         try:
             await connection.run_sync(Base.metadata.drop_all)
         except Exception as e:
-            logger.info(f"Error dropping tables: {e}")
+            # logger.info(f"Error dropping tables: {e}")
             raise
 
 
-DATABASE_URL = settings.db_url if not settings.testing else settings.db_url_test
-sessionmanager = DatabaseSessionManager(DATABASE_URL)
+# DATABASE_URL = settings.db_url if not settings.testing else settings.db_url_test
+sessionmanager = DatabaseSessionManager()
 
 
 async def get_db():
